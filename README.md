@@ -10,15 +10,15 @@ I have also implemented a frontend for this project using Angular. This can be f
 
 - configured to use absolute path using `module-alias`
 - enabled watch using `nodemon`
+- `TypeORM` with remote PostgreSQL db on `Supabase`
 
 ## Running the app
+
+Create `ormconfig.template.ts` file using [ormconfig.template.ts](./src/ormconfig.template.ts)
 
 ```bash
 # development
 $ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
 
 # production mode
 $ pnpm run start:prod
