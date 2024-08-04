@@ -1,0 +1,8 @@
+/* eslint-disable */
+export default async () => {
+    const t = {
+        ["./tag/dto/getTags.dto"]: await import("./tag/dto/getTags.dto"),
+        ["./user/user.entity"]: await import("./user/user.entity")
+    };
+    return { "@nestjs/swagger": { "models": [[import("./tag/tag.entity"), { "TagEntity": { id: { required: true, type: () => Number }, name: { required: true, type: () => String } } }], [import("./tag/dto/getTags.dto"), { "GetTagsDto": { tags: { required: true, type: () => [String] } } }], [import("./user/dto/createUser.dto"), { "CreateUserDto": { email: { required: true, type: () => String }, password: { required: true, type: () => String }, username: { required: true, type: () => String } } }], [import("./user/user.entity"), { "UserEntity": { id: { required: true, type: () => Number }, email: { required: true, type: () => String }, username: { required: true, type: () => String }, bio: { required: true, type: () => String }, image: { required: true, type: () => String }, password: { required: true, type: () => String } } }]], "controllers": [[import("./app.controller"), { "AppController": { "getHello": { type: String } } }], [import("./tag/tag.controller"), { "TagController": { "findAll": { type: t["./tag/dto/getTags.dto"].GetTagsDto } } }], [import("./user/user.controller"), { "UserController": { "createUser": { type: t["./user/user.entity"].UserEntity } } }]] } };
+};

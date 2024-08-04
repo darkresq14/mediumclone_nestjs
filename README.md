@@ -11,6 +11,10 @@ I have also implemented a frontend for this project using Angular. This can be f
 - configured to use absolute path using `module-alias`
 - enabled watch using `nodemon`
 - `TypeORM` with remote PostgreSQL db on [neon.tech](https://neon.tech)
+- Swagger using `@nestjs/swagger`
+- Validation using [class-validator](https://github.com/typestack/class-validator)
+- SWC(Speedy Web Compiler) builder instead of the standard TypeScript compiler
+- Hashing passwords using `bcrypt`
 
 ## Running the app
 
