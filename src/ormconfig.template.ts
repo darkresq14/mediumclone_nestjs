@@ -2,9 +2,10 @@ import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConne
 
 const config: PostgresConnectionOptions = {
   type: 'postgres',
-  host: 'postgresql://mediumclone.dogvvnyctjypeevpslpt:[YOUR-PASSWORD]@aws-0-eu-central-1.pooler.supabase.com:6543/postgres',
+  url: '[YOUR_CONNECTION_STRING]',
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
-  synchronize: true,
+  synchronize: false,
+  migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
 };
 
 export default config;

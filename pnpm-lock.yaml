@@ -26,9 +26,6 @@ importers:
       module-alias:
         specifier: ^2.2.3
         version: 2.2.3
-      nodemon:
-        specifier: ^3.1.4
-        version: 3.1.4
       pg:
         specifier: ^8.12.0
         version: 8.12.0

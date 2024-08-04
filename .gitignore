@@ -1,4 +1,5 @@
 src/ormconfig.ts
+package-lock.json
 
 # compiled output
 /dist

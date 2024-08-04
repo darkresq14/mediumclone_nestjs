@@ -10,11 +10,13 @@ I have also implemented a frontend for this project using Angular. This can be f
 
 - configured to use absolute path using `module-alias`
 - enabled watch using `nodemon`
-- `TypeORM` with remote PostgreSQL db on `Supabase`
+- `TypeORM` with remote PostgreSQL db on [neon.tech](https://neon.tech)
 
 ## Running the app
 
-Create `ormconfig.template.ts` file using [ormconfig.template.ts](./src/ormconfig.template.ts)
+- Create `ormconfig.template.ts` file using [ormconfig.template.ts](./src/ormconfig.template.ts)
+- `pnpm install`
+- `pnpm db:migrate`
 
 ```bash
 # development
