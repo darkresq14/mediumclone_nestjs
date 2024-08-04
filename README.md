@@ -19,6 +19,7 @@ I have also implemented a frontend for this project using Angular. This can be f
 ## Running the app
 
 - Create `ormconfig.template.ts` file using [ormconfig.template.ts](./src/ormconfig.template.ts)
+- Create `config.ts` file using [config.template.ts](./src/config.template.ts)
 - `pnpm install`
 - `pnpm db:migrate`
 

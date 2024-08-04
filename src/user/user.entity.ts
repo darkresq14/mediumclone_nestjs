@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from 'typeorm';
 import { hash } from 'bcrypt';
+import { IsEmail } from 'class-validator';
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -7,6 +8,7 @@ export class UserEntity {
   id: number;
 
   @Column()
+  @IsEmail()
   email: string;
 
   @Column()

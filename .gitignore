@@ -1,4 +1,6 @@
 src/ormconfig.ts
+src/config.ts
+src/metadata.ts
 package-lock.json
 
 # compiled output
