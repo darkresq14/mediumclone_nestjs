@@ -24,6 +24,7 @@
     "db:migrate": "pnpm typeorm migration:run"
   },
   "dependencies": {
+    "@nanogiants/nestjs-swagger-api-exception-decorator": "^1.6.11",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
@@ -32,6 +33,7 @@
     "@swc/cli": "^0.4.0",
     "@swc/core": "^1.7.6",
     "bcrypt": "^5.1.1",
+    "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "jsonwebtoken": "^9.0.2",
     "mediumclone_nestjs": "file:",

@@ -1,14 +1,14 @@
-import { IsEmail } from 'class-validator';
+import { OmitType } from '@nestjs/swagger';
+import { UserEntity } from '@app/user/entity/user.entity';
 
 export class UserResponseDto {
   user: UserDto;
 }
 
-export class UserDto {
-  username: string;
-  @IsEmail()
-  email: string;
-  bio: string;
-  image: string;
+export class UserDto extends OmitType(UserEntity, [
+  'hashPassword',
+  'id',
+  'password',
+] as const) {
   token: string;
 }

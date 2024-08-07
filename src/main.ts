@@ -11,6 +11,9 @@ import metadata from './metadata';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  const apiPath = 'api';
+  app.setGlobalPrefix(apiPath);
+
   app.useGlobalInterceptors(new ContentTypeInterceptor());
 
   const config = new DocumentBuilder()
