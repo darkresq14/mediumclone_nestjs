@@ -48,11 +48,17 @@ export class UserService {
     const passwordCorrect = await compare(loginUserDto.password, user.password);
 
     if (!user || !passwordCorrect) {
-      throw new UnauthorizedException('Email or password incorrect.');
+      throw new UnauthorizedException('Email or password incorrect');
     }
 
     delete user.password;
     return user;
+  }
+
+  async findById(id: number): Promise<UserEntity> {
+    return this.userRepository.findOne({
+      where: { id: id },
+    });
   }
 
   private generateJwt(user: UserEntity): string {
