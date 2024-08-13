@@ -1,11 +1,13 @@
 import {
+  BadRequestException,
   Body,
   ConflictException,
   Controller,
   Get,
   Post,
-  Req,
+  Put,
   UnauthorizedException,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -18,9 +20,11 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { LoginUserDto, UserResponseDto } from '@app/user/dto';
+import { LoginUserDto, UpdateUserDto, UserResponseDto } from '@app/user/dto';
 import { ApiException } from '@nanogiants/nestjs-swagger-api-exception-decorator';
-import { ExpressRequest } from '@app/types';
+import { User } from '@app/user/decorators/user.decorator';
+import { UserEntity } from '@app/user/entity/user.entity';
+import { AuthGuard } from '@app/user/guards/auth-guard.guard';
 
 @ApiTags('Auth')
 @Controller()
@@ -55,15 +59,32 @@ export class UserController {
   }
 
   @Get('user')
+  @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Get Current User' })
   @ApiOkResponse({ type: UserResponseDto, description: 'OK' })
-  @ApiException(() => UnauthorizedException, {
-    description: 'Invalid Token',
-  })
-  getCurrentUser(@Req() req: ExpressRequest) {
-    if (!req.user) {
+  @ApiException(() => UnauthorizedException)
+  getCurrentUser(@User() user: UserEntity) {
+    if (!user) {
       throw new UnauthorizedException();
     }
-    return this.userService.buildUserResponse(req.user);
+    return this.userService.buildUserResponse(user);
+  }
+
+  @Put('user')
+  @UseGuards(AuthGuard)
+  @ApiOperation({ summary: 'Update User' })
+  @ApiOkResponse({
+    type: UserResponseDto,
+    description: 'User has been updated',
+  })
+  @ApiException(() => UnauthorizedException)
+  @ApiException(() => BadRequestException)
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async updateUser(
+    @Body() updateUserDto: UpdateUserDto,
+    @User('id') id: number,
+  ) {
+    const updatedUser = await this.userService.updateUser(id, updateUserDto);
+    return this.userService.buildUserResponse(updatedUser);
   }
 }

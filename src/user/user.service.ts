@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   UnauthorizedException,
@@ -9,7 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { sign } from 'jsonwebtoken';
 import { JWT_SECRET } from '@app/config';
-import { LoginUserDto, UserResponseDto } from '@app/user/dto';
+import { LoginUserDto, UpdateUserDto, UserResponseDto } from '@app/user/dto';
 import { compare } from 'bcrypt';
 
 @Injectable()
@@ -59,6 +60,19 @@ export class UserService {
     return this.userRepository.findOne({
       where: { id: id },
     });
+  }
+
+  async updateUser(id: number, updateUserDto: UpdateUserDto) {
+    const updateResult = await this.userRepository.update(
+      { id: id },
+      updateUserDto.user,
+    );
+
+    if (updateResult.affected !== 1) {
+      throw new BadRequestException();
+    }
+
+    return await this.findById(id);
   }
 
   private generateJwt(user: UserEntity): string {
