@@ -24,7 +24,8 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('default')
     .addTag('Auth')
-    .addTag('Tag')
+    .addTag('Tags')
+    .addTag('Articles')
     .build();
 
   await SwaggerModule.loadPluginMetadata(metadata);

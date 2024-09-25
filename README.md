@@ -1,6 +1,8 @@
+# Medium Clone Backend - NestJs
+
 ## Description
 
-Backend for [RealWorld App](https://github.com/gothinkster/realworld) using the following [specs](https://main--realworld-docs.netlify.app/docs/specs/backend-specs/introduction)
+Backend for [RealWorld App](https://github.com/gothinkster/realworld) using the following [specs](https://www.realworld.how/specifications/backend/introduction/)
 
 RealWorld is basically a clone of the popular website Medium.
 
@@ -25,7 +27,7 @@ I have also implemented a frontend for this project using Angular. This can be f
 
 ```bash
 # development
-$ pnpm run start
+$ pnpm run start:dev
 
 # production mode
 $ pnpm run start:prod
