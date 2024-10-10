@@ -12,7 +12,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from '@app/user/user.service';
-import { CreateUserDto } from '@app/user/dto/createUser.dto';
+import { CreateUserDto, CreateUserRequestDto } from '@app/user/dto';
 import {
   ApiBody,
   ApiCreatedResponse,
@@ -33,7 +33,7 @@ export class UserController {
 
   @Post('users')
   @ApiOperation({ summary: 'Registration' })
-  @ApiBody({ type: CreateUserDto })
+  @ApiBody({ type: CreateUserRequestDto })
   @ApiException(() => ConflictException)
   @ApiCreatedResponse({
     type: UserResponseDto,

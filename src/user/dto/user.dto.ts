@@ -9,6 +9,7 @@ export class UserDto extends OmitType(UserEntity, [
   'hashPassword',
   'id',
   'password',
+  'articles',
 ] as const) {
   token: string;
 }

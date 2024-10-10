@@ -1,6 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BeforeInsert,
+  OneToMany,
+} from 'typeorm';
 import { hash } from 'bcrypt';
 import { IsEmail } from 'class-validator';
+import { ArticleEntity } from '@app/article/entity/article.entity';
+import { Type } from '@app/utils';
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -27,4 +35,7 @@ export class UserEntity {
   async hashPassword() {
     this.password = await hash(this.password, 10);
   }
+
+  @OneToMany(() => ArticleEntity, (article) => article.author)
+  articles: Type<ArticleEntity>[];
 }
