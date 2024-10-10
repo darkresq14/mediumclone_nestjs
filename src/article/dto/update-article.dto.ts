@@ -1,7 +1,15 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateArticleDto } from './create-article.dto';
+import { PartialType, PickType } from '@nestjs/swagger';
+import { CreateArticleDto } from '@app/article/dto';
+import { IsNotEmpty, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 
-export class UpdateArticleDto extends PartialType(CreateArticleDto) {
-  name: string;
-  age: number;
+export class PartialArticleDto extends PartialType(
+  PickType(CreateArticleDto, ['title', 'description', 'body']),
+) {}
+
+export class UpdateArticleDto {
+  @ValidateNested()
+  @Type(() => PartialArticleDto)
+  @IsNotEmpty()
+  article: PartialArticleDto;
 }

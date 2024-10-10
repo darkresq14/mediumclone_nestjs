@@ -2,10 +2,12 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
+  NotFoundException,
   Param,
-  Patch,
   Post,
+  Put,
   UnauthorizedException,
   UseGuards,
   UsePipes,
@@ -15,6 +17,7 @@ import { ArticleService } from '@app/article/article.service';
 import {
   ApiBody,
   ApiCreatedResponse,
+  ApiOkResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
@@ -25,6 +28,7 @@ import {
   CreateArticleDto,
   ArticleResponseDto,
   CreateArticleRequestDto,
+  UpdateArticleDto,
 } from '@app/article/dto';
 import { UserEntity } from '@app/user/entity/user.entity';
 
@@ -52,20 +56,57 @@ export class ArticleController {
     );
     return this.articleService.buildArticleResponse(createdArticle);
   }
-  // @Get()
-  // findAll() {
-  //   return this.articleService.findAll();
-  // }
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.articleService.findOne(+id);
-  // }
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateArticleDto: UpdateArticleDto) {
-  //   return this.articleService.update(+id, updateArticleDto);
-  // }
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.articleService.remove(+id);
-  // }
+
+  @Get(':slug')
+  @ApiOperation({ summary: 'Get Article' })
+  @ApiOkResponse({
+    type: ArticleResponseDto,
+    description: 'OK',
+  })
+  @ApiException(() => NotFoundException)
+  async findOneBySlug(@Param('slug') slug: string) {
+    const article = await this.articleService.findOneBySlug(slug);
+
+    return this.articleService.buildArticleResponse(article);
+  }
+
+  @Put(':slug')
+  @ApiOperation({ summary: 'Update Article' })
+  @UseGuards(AuthGuard)
+  @ApiBody({ type: UpdateArticleDto })
+  @ApiOkResponse({
+    type: ArticleResponseDto,
+    description: 'Article has been updated',
+  })
+  @ApiException(() => ForbiddenException)
+  @ApiException(() => NotFoundException)
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  async updateBySlug(
+    @User('id') currentUserId: number,
+    @Param('slug') slug: string,
+    @Body() updateArticleDto: UpdateArticleDto,
+  ): Promise<ArticleResponseDto> {
+    const article = await this.articleService.updateBySlug(
+      currentUserId,
+      slug,
+      updateArticleDto,
+    );
+
+    return this.articleService.buildArticleResponse(article);
+  }
+
+  @Delete(':slug')
+  @ApiOperation({ summary: 'Delete Article' })
+  @UseGuards(AuthGuard)
+  @ApiOkResponse({
+    description: 'Article has been deleted',
+  })
+  @ApiException(() => ForbiddenException)
+  @ApiException(() => NotFoundException)
+  async deleteBySlug(
+    @User('id') currentUserId: number,
+    @Param('slug') slug: string,
+  ) {
+    return await this.articleService.deleteBySlug(currentUserId, slug);
+  }
 }

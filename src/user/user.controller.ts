@@ -12,7 +12,6 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from '@app/user/user.service';
-import { CreateUserDto, CreateUserRequestDto } from '@app/user/dto';
 import {
   ApiBody,
   ApiCreatedResponse,
@@ -20,7 +19,13 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { LoginUserDto, UpdateUserDto, UserResponseDto } from '@app/user/dto';
+import {
+  CreateUserDto,
+  CreateUserRequestDto,
+  LoginUserDto,
+  UpdateUserDto,
+  UserResponseDto,
+} from '@app/user/dto';
 import { ApiException } from '@nanogiants/nestjs-swagger-api-exception-decorator';
 import { User } from '@app/user/decorators/user.decorator';
 import { UserEntity } from '@app/user/entity/user.entity';

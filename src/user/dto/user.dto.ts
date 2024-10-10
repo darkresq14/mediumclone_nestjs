@@ -13,3 +13,5 @@ export class UserDto extends OmitType(UserEntity, [
 ] as const) {
   token: string;
 }
+
+export class AuthorDto extends OmitType(UserDto, ['token', 'email']) {}

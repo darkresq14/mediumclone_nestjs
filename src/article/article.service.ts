@@ -1,14 +1,18 @@
-import { Injectable } from '@nestjs/common';
 import {
-  ArticleDto,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import {
   ArticleResponseDto,
-  UpdateArticleDto,
   CreateArticleDto,
+  UpdateArticleDto,
 } from '@app/article/dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleEntity } from '@app/article/entity/article.entity';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { UserEntity } from '@app/user/entity/user.entity';
+import slugify from 'slugify';
 
 @Injectable()
 export class ArticleService {
@@ -27,7 +31,7 @@ export class ArticleService {
       newArticle.tagList = [];
     }
 
-    newArticle.slug = 'foo';
+    newArticle.slug = this.getSlug(newArticle.title);
     newArticle.author = currentUser;
 
     return await this.articleRepository.save(newArticle);
@@ -37,22 +41,61 @@ export class ArticleService {
   //   return `This action returns all articles`;
   // }
 
-  // findOne(id: number) {
-  //   return `This action returns a #id article`;
-  // }
+  async findOneBySlug(slug: string): Promise<ArticleEntity> {
+    const article = await this.articleRepository.findOne({ where: { slug } });
 
-  // update(id: number, updateArticleDto: UpdateArticleDto) {
-  //   return `This action updates a #id article`;
-  // }
+    if (!article) {
+      throw new NotFoundException();
+    }
 
-  // remove(id: number) {
-  //   return `This action removes a #id article`;
-  // }
+    return article;
+  }
+
+  async updateBySlug(
+    currentUserId: number,
+    slug: string,
+    updateArticleDto: UpdateArticleDto,
+  ): Promise<ArticleEntity> {
+    const article = await this.findOneBySlug(slug);
+
+    if (article.author.id !== currentUserId) {
+      throw new ForbiddenException();
+    }
+
+    if (updateArticleDto.article.title) {
+      article.slug = this.getSlug(updateArticleDto.article.title);
+    }
+
+    Object.assign(article, updateArticleDto.article);
+
+    return this.articleRepository.save(article);
+  }
+
+  async deleteBySlug(
+    currentUserId: number,
+    slug: string,
+  ): Promise<DeleteResult> {
+    const article = await this.findOneBySlug(slug);
+
+    if (article.author.id !== currentUserId) {
+      throw new ForbiddenException();
+    }
+
+    return await this.articleRepository.delete({ slug });
+  }
 
   buildArticleResponse(article: ArticleEntity): ArticleResponseDto {
     const { id, ...rest } = article;
     return {
       article: { ...rest },
     };
+  }
+
+  private getSlug(title: string): string {
+    return (
+      slugify(title, { lower: true }) +
+      '-' +
+      ((Math.random() * Math.pow(36, 6)) | 0).toString(36)
+    );
   }
 }
